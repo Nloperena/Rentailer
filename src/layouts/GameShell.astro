@@ -37,8 +37,8 @@ const { title, currentPath = Astro.url.pathname } = Astro.props;
     </div>
     
     <!-- Main content area (transitions on navigation) -->
-    <main class="md:pl-[260px] min-h-screen bg-background" transition:animate="fade">
-      <div class="px-4 py-6 md:px-8 md:py-8 pb-28 md:pb-8">
+    <main class="md:pl-[260px] min-h-screen relative z-50 pointer-events-none" transition:animate="fade">
+      <div class="px-4 py-6 md:px-8 md:py-8 pb-28 md:pb-8 bg-background pointer-events-auto min-h-screen">
         <slot />
       </div>
     </main>

@@ -176,7 +176,7 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
 
   return (
     <aside
-      className="hidden md:flex fixed left-0 top-0 bottom-0 w-[260px] flex-col bg-background z-40 border-r border-border/60"
+      className="hidden md:flex fixed left-0 top-0 bottom-0 w-[260px] flex-col bg-background z-10 border-r border-border/60"
     >
       {/* Header */}
       <div className="h-14 px-5 flex items-center justify-between border-b border-border/60 bg-background/50 backdrop-blur-md">

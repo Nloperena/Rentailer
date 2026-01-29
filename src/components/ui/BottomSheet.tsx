@@ -20,7 +20,7 @@ export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetPro
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-charcoal/20 backdrop-blur-sm z-[60]"
+            className="fixed inset-0 bg-charcoal/40 backdrop-blur-md z-[60] pointer-events-auto"
           />
           
           {/* Sheet */}
@@ -29,10 +29,10 @@ export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetPro
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/60 rounded-t-[3rem] shadow-2xl z-[70] max-h-[90vh] overflow-y-auto scrollbar-hide"
+            className="fixed bottom-0 left-0 right-0 md:bottom-6 md:max-w-2xl md:mx-auto bg-background border-t md:border border-border/60 rounded-t-[3rem] md:rounded-[2.5rem] shadow-2xl z-[100] max-h-[90vh] overflow-y-auto scrollbar-hide pointer-events-auto"
           >
             <div className="sticky top-0 bg-background/80 backdrop-blur-md px-8 py-6 flex items-center justify-between border-b border-border/40 z-10">
-              <div className="w-12 h-1 bg-border/40 rounded-full absolute top-2 left-1/2 -translate-x-1/2" />
+              <div className="w-12 h-1 bg-border/40 rounded-full absolute top-2 left-1/2 -translate-x-1/2 md:hidden" />
               <h2 className="text-2xl font-serif text-foreground tracking-tight">{title}</h2>
               <button 
                 onClick={onClose}

@@ -170,7 +170,7 @@ function PropertyCard({ property, onSelect }: { property: Property; onSelect: ()
       onClick={onSelect}
     >
       {/* Image Carousel - Smaller Aspect Ratio */}
-      <div className="relative aspect-[16/7] overflow-hidden">
+      <div className="relative aspect-[16/6] overflow-hidden">
         <img
           src={property.images[currentImage]}
           alt={property.name}
