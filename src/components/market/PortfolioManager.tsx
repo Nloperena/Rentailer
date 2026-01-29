@@ -55,14 +55,14 @@ export function PortfolioManager() {
           <FadeIn key={prop.id} className="surface-panel group hover:border-gold/40 cursor-pointer p-6 relative overflow-hidden transition-all duration-300 shadow-xl" onClick={() => setEditingId(prop.id)}>
             <div className="flex items-center justify-between relative z-10">
               <div className="flex items-center gap-6">
-                <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center border border-border/60 group-hover:bg-gold/5 group-hover:border-gold/20 transition-all duration-500 shadow-inner">
-                  <Home className="text-muted-foreground/40 group-hover:text-gold/60 transition-colors" size={36} />
+                <div className="w-14 h-14 bg-background rounded-xl flex items-center justify-center border border-border/60 group-hover:bg-gold/5 group-hover:border-gold/20 transition-all duration-500 shadow-inner">
+                  <Home className="text-muted-foreground/40 group-hover:text-gold/60 transition-colors" size={24} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <div className="flex items-center gap-3">
-                    <h3 className="text-xl font-bold text-foreground tracking-tight">{prop.name}<span className="tm">™</span></h3>
+                    <h3 className="text-lg font-bold text-foreground tracking-tight">{prop.name}<span className="tm">™</span></h3>
                     <span className={cn(
-                      "px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border transition-colors",
+                      "px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border transition-colors",
                       prop.status === 'Published' 
                         ? 'bg-gold/10 text-gold border-gold/30 group-hover:bg-gold/20' 
                         : 'bg-muted/30 text-muted-foreground border-border/40'
@@ -70,23 +70,23 @@ export function PortfolioManager() {
                       {prop.status}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground tracking-tight">
-                    <MapPin size={14} className="text-gold/40" />
+                  <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground tracking-tight">
+                    <MapPin size={12} className="text-gold/40" />
                     {prop.location}
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-10 text-right hidden sm:flex">
+              <div className="flex items-center gap-12 text-right hidden sm:flex">
                 <div>
-                  <p className="text-[9px] text-muted-foreground/60 font-black uppercase tracking-[0.2em] mb-1">Portfolio Reach</p>
-                  <p className="text-xl font-bold text-foreground tracking-tighter">{prop.views.toLocaleString()}</p>
+                  <p className="text-[8px] text-muted-foreground/60 font-black uppercase tracking-[0.2em] mb-1">Portfolio Reach</p>
+                  <p className="text-3xl font-black text-white tracking-tighter">{prop.views.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-[9px] text-muted-foreground/60 font-black uppercase tracking-[0.2em] mb-1">Direct ROI</p>
-                  <p className="text-xl font-bold text-gold tracking-tighter">{prop.bookings}</p>
+                  <p className="text-[8px] text-muted-foreground/60 font-black uppercase tracking-[0.2em] mb-1">Direct ROI</p>
+                  <p className="text-3xl font-black text-gold tracking-tighter">{prop.bookings}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground group-hover:text-gold group-hover:bg-gold/10 transition-all">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground group-hover:text-gold group-hover:bg-gold/10 transition-all ml-4">
                   <Settings2 size={20} />
                 </div>
               </div>

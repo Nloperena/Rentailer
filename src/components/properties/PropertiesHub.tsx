@@ -164,17 +164,17 @@ function PropertyCard({ property, onSelect }: { property: Property; onSelect: ()
 
   return (
     <motion.div
-      className="bg-[#2b2d31] rounded-xl overflow-hidden hover:ring-1 hover:ring-gold/30 transition-all cursor-pointer group"
+      className="bg-[#2b2d31] rounded-2xl overflow-hidden hover:ring-1 hover:ring-gold/30 transition-all cursor-pointer group shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={onSelect}
     >
-      {/* Image Carousel */}
-      <div className="relative aspect-[4/3] overflow-hidden">
+      {/* Image Carousel - Smaller Aspect Ratio */}
+      <div className="relative aspect-[16/7] overflow-hidden">
         <img
           src={property.images[currentImage]}
           alt={property.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
         />
         
         {/* Image Navigation */}
@@ -185,78 +185,49 @@ function PropertyCard({ property, onSelect }: { property: Property; onSelect: ()
                 e.stopPropagation();
                 setCurrentImage((prev) => (prev - 1 + property.images.length) % property.images.length);
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white hover:bg-black/60"
             >
-              <ChevronLeft className="w-4 h-4 text-gray-800" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setCurrentImage((prev) => (prev + 1) % property.images.length);
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white hover:bg-black/60"
             >
-              <ChevronRight className="w-4 h-4 text-gray-800" />
+              <ChevronRight className="w-4 h-4" />
             </button>
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-              {property.images.map((_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    "w-1.5 h-1.5 rounded-full transition-colors",
-                    i === currentImage ? "bg-white" : "bg-white/50"
-                  )}
-                />
-              ))}
-            </div>
           </>
         )}
 
         {/* Status Badge */}
         <div className="absolute top-3 left-3">
-          <span className={cn("px-2 py-1 rounded-full text-xs font-medium", statusColors[property.status])}>
+          <span className={cn("px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg", statusColors[property.status])}>
             {statusLabels[property.status]}
           </span>
         </div>
-
-        {/* Quick Actions */}
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            onClick={(e) => e.stopPropagation()}
-            className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70"
-          >
-            <MoreHorizontal className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Messages Badge */}
-        {property.messages > 0 && (
-          <div className="absolute top-3 right-14 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-            {property.messages} new
-          </div>
-        )}
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5 space-y-5">
         {/* Header */}
-        <div className="flex items-start justify-between mb-2">
-          <div>
-            <h3 className="font-semibold text-white">{property.name}</h3>
-            <p className="text-sm text-gray-400 flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
+        <div className="flex items-start justify-between">
+          <div className="min-w-0">
+            <h3 className="font-bold text-white text-lg tracking-tight truncate">{property.name}</h3>
+            <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
+              <MapPin className="w-3 h-3 text-gold/50" />
               {property.address.split(',').slice(0, 2).join(',')}
             </p>
           </div>
-          <div className="flex items-center gap-1 text-gold">
-            <Star className="w-4 h-4 fill-current" />
-            <span className="font-medium">{property.stats.rating}</span>
-            <span className="text-gray-500 text-sm">({property.stats.reviews})</span>
+          <div className="flex items-center gap-1.5 bg-gold/10 px-2 py-1 rounded-lg border border-gold/20">
+            <Star className="w-3.5 h-3.5 text-gold fill-gold" />
+            <span className="font-bold text-gold text-sm">{property.stats.rating}</span>
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-3 py-3 border-y border-white/5">
+        {/* Quick Stats - Larger Numbers */}
+        <div className="grid grid-cols-3 gap-2 py-4 border-y border-white/5 bg-white/[0.02] rounded-xl px-2">
           <QuickStat
             label="Views"
             value={property.stats.views}
@@ -278,36 +249,29 @@ function PropertyCard({ property, onSelect }: { property: Property; onSelect: ()
         </div>
 
         {/* Bottom Section */}
-        <div className="flex items-center justify-between mt-3">
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-semibold text-white">${property.pricing.basePrice}</span>
-            <span className="text-sm text-gray-400">/ night</span>
+        <div className="flex items-center justify-between pt-1">
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-3xl font-black text-white tracking-tighter">${property.pricing.basePrice}</span>
+            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">/ night</span>
           </div>
-          <div className="flex items-center gap-2">
-            {/* Occupancy */}
-            <div className="flex items-center gap-1">
-              <div className="w-16 h-1.5 bg-[#1e1f22] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gold rounded-full"
-                  style={{ width: `${property.stats.occupancy}%` }}
-                />
+          
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Occupancy</p>
+              <div className="flex items-center gap-2">
+                <div className="w-16 h-1.5 bg-background rounded-full overflow-hidden border border-border/40">
+                  <motion.div
+                    className="h-full bg-gold rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${property.stats.occupancy}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                </div>
+                <span className="text-xs font-bold text-white">{property.stats.occupancy}%</span>
               </div>
-              <span className="text-xs text-gray-400">{property.stats.occupancy}%</span>
             </div>
           </div>
         </div>
-
-        {/* Tasks Alert */}
-        {property.tasks.length > 0 && (
-          <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
-            <AlertCircle className="w-4 h-4 text-amber-400" />
-            <span className="text-xs text-amber-400">
-              {property.tasks.filter(t => t.urgent).length > 0 
-                ? `${property.tasks.filter(t => t.urgent).length} urgent task(s)`
-                : `${property.tasks.length} pending task(s)`}
-            </span>
-          </div>
-        )}
       </div>
     </motion.div>
   );
@@ -327,19 +291,19 @@ function QuickStat({
   const isPositive = trend >= 0;
 
   return (
-    <div className="text-center">
-      <div className="flex items-center justify-center gap-1 mb-1">
-        <Icon className="w-3 h-3 text-gray-500" />
-        <span className={cn(
-          "text-[10px] flex items-center",
-          isPositive ? "text-emerald-400" : "text-red-400"
-        )}>
-          {isPositive ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}
-          {Math.abs(trend)}%
-        </span>
+    <div className="text-center space-y-1">
+      <div className="flex items-center justify-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">
+        <Icon className="w-3 h-3" />
+        {label}
       </div>
-      <p className="text-sm font-semibold text-white">{value}</p>
-      <p className="text-[10px] text-gray-500">{label}</p>
+      <p className="text-3xl font-black text-white tracking-tighter">{value}</p>
+      <div className={cn(
+        "text-[10px] font-bold flex items-center justify-center gap-0.5",
+        isPositive ? "text-emerald-400" : "text-red-400"
+      )}>
+        {isPositive ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}
+        {Math.abs(trend)}%
+      </div>
     </div>
   );
 }

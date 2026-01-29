@@ -542,5 +542,3 @@ export function GameNav({ currentPath = '/' }: { currentPath?: string }) {
 }
 
 export default GameNav;
-
-

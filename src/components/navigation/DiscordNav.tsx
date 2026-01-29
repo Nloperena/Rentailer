@@ -156,46 +156,6 @@ function UserPanel() {
   );
 }
 
-function MenuLink({ href, icon: Icon, label, badge }: { 
-  href: string; 
-  icon: React.ElementType; 
-  label: string;
-  badge?: number;
-}) {
-  return (
-    <a
-      href={href}
-      className="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors group"
-    >
-      <Icon className="w-4 h-4 text-gold/70 group-hover:text-gold transition-colors" />
-      <span className="flex-1 text-sm">{label}</span>
-      {badge && (
-        <span className="px-1.5 py-0.5 rounded bg-gold text-primary-foreground text-[10px] font-bold">
-          {badge}
-        </span>
-      )}
-      <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-gold/50 transition-all" />
-    </a>
-  );
-}
-
-function StatusButton({ status, current }: { status: string; current: string }) {
-  const labels = { online: 'Online', idle: 'Idle', dnd: 'DND', offline: 'Invisible' };
-  const isActive = status === current;
-  
-  return (
-    <button
-      className={cn(
-        "flex flex-col items-center gap-1 p-2 rounded transition-colors",
-        isActive ? "bg-white/10" : "hover:bg-white/5"
-      )}
-    >
-      <div className={cn("w-3 h-3 rounded-full", statusColors[status as keyof typeof statusColors])} />
-      <span className="text-[10px] text-gray-400">{labels[status as keyof typeof labels]}</span>
-    </button>
-  );
-}
-
 // Main Navigation Component
 export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -239,7 +199,7 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
 
       {/* Navigation */}
       <nav className="flex-1 flex flex-col p-3 custom-scrollbar overflow-y-auto">
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
           {/* Temporary To Do Section */}
           {!isToDoCompleted && (
             <div className="space-y-2">
@@ -265,7 +225,7 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
 
           {/* Main Strategic Section */}
           <div className="space-y-1">
-            <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 text-center">Portfolio Management</p>
+            <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 uppercase">Portfolio</p>
             {mainNavItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPath === item.href || 
@@ -304,8 +264,8 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
         </div>
 
         {/* Bottom Navigation */}
-        <div className="mt-auto pt-6 space-y-1 border-t border-border/40">
-          <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 text-center">Intelligence & Network</p>
+        <div className="pt-6 space-y-1 border-t border-border/40 pb-4">
+          <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 uppercase">Intelligence</p>
           {bottomNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPath === item.href || 
@@ -345,4 +305,3 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
 }
 
 export default DiscordNav;
-
