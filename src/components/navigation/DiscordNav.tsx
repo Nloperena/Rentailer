@@ -4,7 +4,7 @@ import {
   Home, Building2, ShoppingBag, GraduationCap, Users, 
   BarChart3, Sparkles, Settings,
   ChevronRight, LogOut, User, Bell, Shield, CreditCard,
-  Moon, Sun, Circle, Edit3
+  Moon, Sun, Circle, Edit3, CheckCircle2, ListTodo
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -16,11 +16,13 @@ interface NavItem {
   badge?: number;
 }
 
-const navItems: NavItem[] = [
-  { id: 'dashboard', label: 'Mission Control', href: '/', icon: Home },
+const mainNavItems: NavItem[] = [
   { id: 'properties', label: 'Properties', href: '/properties', icon: Building2, badge: 2 },
   { id: 'marketplace', label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
   { id: 'learning', label: 'Academy', href: '/learning', icon: GraduationCap },
+];
+
+const bottomNavItems: NavItem[] = [
   { id: 'community', label: 'Guild', href: '/community', icon: Users },
   { id: 'analytics', label: 'Insights', href: '/analytics', icon: BarChart3 },
   { id: 'jaine', label: 'JAiNE', href: '/jaine', icon: Sparkles },
@@ -35,6 +37,9 @@ const userData = {
   status: 'online' as 'online' | 'idle' | 'dnd' | 'offline',
   level: 3,
   xp: 1250,
+  maxXP: 2000,
+  company: 'Miller Stays',
+  rank: 'Candidate',
 };
 
 const statusColors = {
@@ -46,13 +51,13 @@ const statusColors = {
 
 // User Panel Component (Discord-style bottom panel)
 function UserPanel() {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   return (
     <div className="relative">
-      {/* User Menu Popup */}
+      {/* Profile Card Popup */}
       <AnimatePresence>
-        {showMenu && (
+        {showProfile && (
           <>
             {/* Backdrop */}
             <motion.div
@@ -60,69 +65,66 @@ function UserPanel() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setShowMenu(false)}
+              onClick={() => setShowProfile(false)}
             />
             
-            {/* Menu */}
+            {/* Profile Card */}
             <motion.div
-              className="absolute bottom-full left-0 right-0 mb-2 mx-2 bg-card border border-border/60 rounded-xl shadow-2xl overflow-hidden z-50"
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              className="absolute bottom-full left-0 right-0 mb-4 mx-3 bg-card border border-border/60 rounded-[2rem] shadow-2xl overflow-hidden z-50 p-6 space-y-6"
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
             >
-              {/* User Header */}
-              <div className="p-4 bg-gradient-to-br from-gold/10 via-transparent to-transparent">
-                <div className="flex items-center gap-4">
-                  <div className="relative">
-                    <img
-                      src={userData.avatar}
-                      alt={userData.name}
-                      className="w-12 h-12 rounded-full object-cover ring-2 ring-border"
-                    />
-                    <div className={cn(
-                      "absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-card",
-                      statusColors[userData.status]
-                    )} />
+              {/* Profile Header */}
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="relative">
+                  <img
+                    src={userData.avatar}
+                    alt={userData.name}
+                    className="w-20 h-20 rounded-3xl object-cover ring-2 ring-gold/30 p-1 bg-background shadow-xl"
+                  />
+                  <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl btn-gold flex items-center justify-center border border-gold/50 shadow-lg">
+                    <span className="text-[10px] font-black text-primary-foreground">{userData.level}</span>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground text-sm leading-tight">{userData.name}</h3>
-                    <p className="text-xs text-muted-foreground">@{userData.username}</p>
-                    <div className="flex items-center gap-1 mt-1.5">
-                      <span className="px-2 py-0.5 rounded-full bg-gold/10 text-gold text-[10px] font-bold uppercase tracking-wider border border-gold/20">
-                        Level {userData.level}
-                      </span>
-                    </div>
-                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground tracking-tight">{userData.name}<span className="tm">™</span></h3>
+                  <p className="text-[10px] text-gold font-black uppercase tracking-widest mt-1">{userData.rank} • {userData.company}</p>
                 </div>
               </div>
 
-              {/* Menu Items */}
-              <div className="p-2">
-                <MenuLink href="/profile" icon={User} label="Profile" />
-                <MenuLink href="/settings" icon={Settings} label="Settings" />
-                <MenuLink href="/settings#notifications" icon={Bell} label="Notifications" badge={3} />
-                <MenuLink href="/settings#billing" icon={CreditCard} label="Subscription" />
-                
-                <div className="h-px bg-border/60 my-2 mx-2" />
-                
-                {/* Status Selector */}
-                <div className="px-3 py-1.5">
-                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-3">Presence</p>
-                  <div className="grid grid-cols-4 gap-2">
-                    <StatusButton status="online" current={userData.status} />
-                    <StatusButton status="idle" current={userData.status} />
-                    <StatusButton status="dnd" current={userData.status} />
-                    <StatusButton status="offline" current={userData.status} />
-                  </div>
+              {/* Progress */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-end px-1">
+                  <span className="text-[9px] text-muted-foreground font-black uppercase tracking-widest">Authority Progress</span>
+                  <span className="text-[10px] text-gold font-black">{userData.xp} / {userData.maxXP} XP</span>
                 </div>
+                <div className="h-1.5 bg-background rounded-full overflow-hidden border border-border/20">
+                  <motion.div 
+                    className="h-full bg-gold rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(userData.xp / userData.maxXP) * 100}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                </div>
+              </div>
 
-                <div className="h-px bg-border/60 my-2 mx-2" />
-                
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-destructive/10 text-destructive transition-all text-left group">
-                  <LogOut className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
-                  <span className="text-sm font-medium">Log Out</span>
+              {/* Quick Actions */}
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <button className="flex items-center justify-center gap-2 p-3 rounded-2xl bg-muted/30 border border-border/60 text-xs font-bold text-foreground hover:bg-gold/10 transition-colors group">
+                  <User className="w-4 h-4 text-gold group-hover:scale-110 transition-transform" />
+                  Profile
+                </button>
+                <button className="flex items-center justify-center gap-2 p-3 rounded-2xl bg-muted/30 border border-border/60 text-xs font-bold text-foreground hover:bg-gold/10 transition-colors group">
+                  <Settings className="w-4 h-4 text-gold group-hover:rotate-90 transition-transform" />
+                  Settings
                 </button>
               </div>
+
+              <button className="w-full flex items-center justify-center gap-2 p-3 rounded-2xl bg-destructive/5 border border-destructive/10 text-xs font-bold text-destructive hover:bg-destructive/10 transition-all">
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
             </motion.div>
           </>
         )}
@@ -130,39 +132,26 @@ function UserPanel() {
 
       {/* User Panel Bar */}
       <div className="bg-muted/30 border-t border-border/60 p-3">
-        <div className="flex items-center gap-3">
-          {/* Avatar & Info */}
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="flex-1 flex items-center gap-3 p-1 rounded-lg hover:bg-white/5 transition-all group"
-          >
-            <div className="relative flex-shrink-0">
-              <img
-                src={userData.avatar}
-                alt={userData.name}
-                className="w-9 h-9 rounded-full object-cover ring-1 ring-white/10 group-hover:ring-gold/50 transition-all"
-              />
-              <div className={cn(
-                "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-muted",
-                statusColors[userData.status]
-              )} />
-            </div>
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-bold text-foreground leading-none mb-1">{userData.name}</p>
-              <p className="text-[10px] text-muted-foreground font-medium">Level {userData.level} • {userData.xp} XP</p>
-            </div>
-          </button>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-1">
-            <a
-              href="/settings"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-gold hover:bg-white/5 transition-colors border border-transparent hover:border-gold/10 active:scale-95"
-            >
-              <Settings className="w-4 h-4" />
-            </a>
+        <button
+          onClick={() => setShowProfile(!showProfile)}
+          className="w-full flex items-center gap-3 p-1.5 rounded-xl hover:bg-gold/5 transition-all group border border-transparent hover:border-gold/10"
+        >
+          <div className="relative flex-shrink-0">
+            <img
+              src={userData.avatar}
+              alt={userData.name}
+              className="w-9 h-9 rounded-xl object-cover ring-1 ring-white/10 group-hover:ring-gold/50 transition-all shadow-md"
+            />
+            <div className={cn(
+              "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-muted",
+              statusColors[userData.status]
+            )} />
           </div>
-        </div>
+          <div className="flex-1 min-w-0 text-left">
+            <p className="text-sm font-bold text-foreground leading-tight tracking-tight">{userData.name}</p>
+            <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-widest opacity-60">Level {userData.level} Strategist</p>
+          </div>
+        </button>
       </div>
     </div>
   );
@@ -211,6 +200,7 @@ function StatusButton({ status, current }: { status: string; current: string }) 
 // Main Navigation Component
 export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [isToDoCompleted, setIsToDoCompleted] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('theme') as 'dark' | 'light' | null;
@@ -249,9 +239,75 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-3 custom-scrollbar">
-        <div className="space-y-1">
-          {navItems.map((item) => {
+      <nav className="flex-1 flex flex-col p-3 custom-scrollbar overflow-y-auto">
+        <div className="space-y-6">
+          {/* Temporary To Do Section */}
+          {!isToDoCompleted && (
+            <div className="space-y-2">
+              <p className="px-3 text-[9px] font-black text-gold uppercase tracking-[0.2em]">Immediate</p>
+              <a
+                href="/"
+                className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative overflow-hidden",
+                  currentPath === '/' 
+                    ? "bg-gold/10 text-foreground border border-gold/20" 
+                    : "bg-muted/20 text-muted-foreground hover:bg-gold/5 hover:text-gold border border-transparent"
+                )}
+              >
+                <ListTodo className={cn(
+                  "w-5 h-5 transition-colors",
+                  currentPath === '/' ? "text-gold" : "group-hover:text-gold"
+                )} />
+                <span className="flex-1 text-sm font-black uppercase tracking-widest">To Do:</span>
+                <div className="w-2 h-2 rounded-full bg-gold animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
+              </a>
+            </div>
+          )}
+
+          {/* Main Strategic Section */}
+          <div className="space-y-1">
+            <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 text-center">Portfolio Management</p>
+            {mainNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = currentPath === item.href || 
+                (item.href !== '/' && currentPath.startsWith(item.href));
+              
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative overflow-hidden",
+                    isActive 
+                      ? "bg-gold/10 text-foreground" 
+                      : "text-muted-foreground hover:bg-gold/5 hover:text-gold"
+                  )}
+                >
+                  {isActive && (
+                    <div
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)]"
+                    />
+                  )}
+                  <Icon className={cn(
+                    "w-5 h-5 transition-colors",
+                    isActive ? "text-gold" : "group-hover:text-gold-light"
+                  )} />
+                  <span className="flex-1 text-sm font-bold tracking-tight">{item.label}</span>
+                  {item.badge && (
+                    <span className="px-2 py-0.5 rounded-full bg-gold text-primary-foreground text-[10px] font-black shadow-lg shadow-gold/20">
+                      {item.badge}
+                    </span>
+                  )}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="mt-auto pt-6 space-y-1 border-t border-border/40">
+          <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 text-center">Intelligence & Network</p>
+          {bottomNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPath === item.href || 
               (item.href !== '/' && currentPath.startsWith(item.href));
@@ -277,16 +333,10 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
                   isActive ? "text-gold" : "group-hover:text-gold-light"
                 )} />
                 <span className="flex-1 text-sm font-bold tracking-tight">{item.label}</span>
-                {item.badge && (
-                  <span className="px-2 py-0.5 rounded-full bg-gold text-primary-foreground text-[10px] font-black shadow-lg shadow-gold/20">
-                    {item.badge}
-                  </span>
-                )}
               </a>
             );
           })}
         </div>
-
       </nav>
 
       {/* User Panel */}

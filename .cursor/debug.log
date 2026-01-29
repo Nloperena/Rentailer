@@ -1,0 +1,14 @@
+{"location":"LearningFeed.tsx:21","message":"LearningFeed rendering","data":{"courseCount":1},"timestamp":1769646593938,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:71","message":"About to use Zap","data":{"courseTitle":"The Stray Cat Method"},"timestamp":1769646593938,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:21","message":"LearningFeed rendering","data":{"courseCount":1},"timestamp":1769646593940,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:35","message":"Mapping course","data":{"index":0,"courseTitle":"The Stray Cat Method"},"timestamp":1769646593940,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:71","message":"About to use Zap","data":{"courseTitle":"The Stray Cat Method"},"timestamp":1769646593940,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:35","message":"Mapping course","data":{"index":0,"courseTitle":"The Stray Cat Method"},"timestamp":1769646593938,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:21","message":"LearningFeed rendering","data":{"courseCount":1},"timestamp":1769646627578,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:35","message":"Mapping course","data":{"index":0,"courseTitle":"The Stray Cat Method"},"timestamp":1769646627578,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:71","message":"About to use Zap","data":{"courseTitle":"The Stray Cat Method"},"timestamp":1769646627578,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:75","message":"Zap rendered successfully","data":{"courseTitle":"The Stray Cat Method"},"timestamp":1769646627579,"sessionId":"debug-zap-error","runId":"post-fix","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:21","message":"LearningFeed rendering","data":{"courseCount":1},"timestamp":1769646627580,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:35","message":"Mapping course","data":{"index":0,"courseTitle":"The Stray Cat Method"},"timestamp":1769646627580,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:71","message":"About to use Zap","data":{"courseTitle":"The Stray Cat Method"},"timestamp":1769646627580,"sessionId":"debug-zap-error","runId":"run1","hypothesisId":"1"}
+{"location":"LearningFeed.tsx:75","message":"Zap rendered successfully","data":{"courseTitle":"The Stray Cat Method"},"timestamp":1769646627580,"sessionId":"debug-zap-error","runId":"post-fix","hypothesisId":"1"}
