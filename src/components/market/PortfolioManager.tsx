@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Home, MapPin, Settings2, BarChart3, Globe, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { SpringButton } from '../motion/SpringButton';
 import { FadeIn, StaggerContainer } from '../motion/MotionWrapper';
 import { BottomSheet } from '../ui/BottomSheet';
