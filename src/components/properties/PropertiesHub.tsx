@@ -10,6 +10,7 @@ import {
   Home, Building2, Sun, Moon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AddPropertyFlow } from './AddPropertyFlow';
 
 // Types
 interface Property {
@@ -686,6 +687,7 @@ export function PropertiesHub() {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -695,7 +697,10 @@ export function PropertiesHub() {
           <h1 className="text-2xl font-serif text-white">Your Properties</h1>
           <p className="text-gray-400">{properties.length} listings · Manage your portfolio</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gold text-black font-medium hover:bg-gold/90 transition-colors">
+        <button 
+          onClick={() => setIsAdding(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gold text-black font-medium hover:bg-gold/90 transition-colors"
+        >
           <Plus className="w-4 h-4" />
           Add Property
         </button>
@@ -752,12 +757,21 @@ export function PropertiesHub() {
 
       {/* Empty State for Add More */}
       <motion.button
+        onClick={() => setIsAdding(true)}
         className="w-full py-12 rounded-xl border-2 border-dashed border-white/10 hover:border-gold/30 transition-colors group"
         whileHover={{ scale: 1.01 }}
       >
         <Plus className="w-8 h-8 mx-auto mb-2 text-gray-500 group-hover:text-gold transition-colors" />
         <p className="text-gray-500 group-hover:text-gray-300 transition-colors">Add another property</p>
       </motion.button>
+
+      <AddPropertyFlow 
+        isOpen={isAdding} 
+        onClose={() => setIsAdding(false)}
+        onSuccess={(prop) => {
+          console.log('Property added:', prop);
+        }}
+      />
 
       {/* Detail Panel */}
       <AnimatePresence>

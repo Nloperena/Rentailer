@@ -6,6 +6,7 @@ import { FadeIn, StaggerContainer } from '../motion/MotionWrapper';
 import { BottomSheet } from '../ui/BottomSheet';
 import { JaineFieldHelper } from '../ui/JaineFieldHelper';
 import { routes } from '@/lib/routes';
+import { AddPropertyFlow } from '../properties/AddPropertyFlow';
 
 const mockProperties = [
   { id: '1', name: 'Sunset Beach House', location: 'Destin, FL', status: 'Published', views: 1240, bookings: 12, description: '' },
@@ -94,28 +95,14 @@ export function PortfolioManager() {
         ))}
       </div>
 
-      {/* Add Property Sheet */}
-      <BottomSheet 
+      <AddPropertyFlow 
         isOpen={isAdding} 
-        onClose={() => setIsAdding(false)} 
-        title="Register Strategic Asset"
-      >
-        <div className="space-y-8 p-2">
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Asset Name</label>
-              <input type="text" className="w-full h-14 bg-background border border-border/60 rounded-2xl px-6 text-foreground font-bold tracking-tight focus:outline-none focus:border-gold/50 focus:bg-gold/5 transition-all shadow-inner" placeholder="e.g. Sunset Beach House" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Market Location</label>
-              <input type="text" className="w-full h-14 bg-background border border-border/60 rounded-2xl px-6 text-foreground font-bold tracking-tight focus:outline-none focus:border-gold/50 focus:bg-gold/5 transition-all shadow-inner" placeholder="e.g. Destin, FL" />
-            </div>
-          </div>
-          <SpringButton className="w-full h-14 text-lg btn-gold text-primary-foreground font-black uppercase tracking-widest shadow-xl shadow-gold/10">
-            Verify & Create Asset
-          </SpringButton>
-        </div>
-      </BottomSheet>
+        onClose={() => setIsAdding(false)}
+        onSuccess={(prop) => {
+          console.log('Property added:', prop);
+          // In a real app, we would update state here
+        }}
+      />
 
       {/* Edit Property Sheet */}
       <BottomSheet 
