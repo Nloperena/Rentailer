@@ -199,11 +199,11 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
 
       {/* Navigation */}
       <nav className="flex-1 flex flex-col p-3 custom-scrollbar overflow-y-auto">
-        <div className="space-y-6 flex-1">
+        <div className="space-y-8 flex-1 pt-4">
           {/* Temporary To Do Section */}
           {!isToDoCompleted && (
-            <div className="space-y-2">
-              <p className="px-3 text-[9px] font-black text-gold uppercase tracking-[0.2em]">Immediate</p>
+            <div className="space-y-3">
+              <p className="px-4 text-[10px] font-black text-gold uppercase tracking-[0.25em] opacity-80">Immediate</p>
               <a
                 href="/"
                 className={cn(
@@ -217,16 +217,59 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
                   "w-5 h-5 transition-colors",
                   currentPath === '/' ? "text-gold" : "group-hover:text-gold"
                 )} />
-                <span className="flex-1 text-sm font-black uppercase tracking-widest">To Do:</span>
+                <span className="flex-1 text-sm font-bold uppercase tracking-widest">To Do:</span>
                 <div className="w-2 h-2 rounded-full bg-gold animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
               </a>
             </div>
           )}
 
           {/* Main Strategic Section */}
+          <div className="space-y-3">
+            <p className="px-4 text-[10px] font-black text-muted-foreground uppercase tracking-[0.25em] opacity-40">Portfolio</p>
+            <div className="space-y-1">
+              {mainNavItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = currentPath === item.href || 
+                  (item.href !== '/' && currentPath.startsWith(item.href));
+                
+                return (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all group relative overflow-hidden",
+                      isActive 
+                        ? "bg-gold/10 text-foreground" 
+                        : "text-muted-foreground hover:bg-gold/5 hover:text-gold"
+                    )}
+                  >
+                    {isActive && (
+                      <div
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)]"
+                      />
+                    )}
+                    <Icon className={cn(
+                      "w-5 h-5 transition-colors",
+                      isActive ? "text-gold" : "group-hover:text-gold-light"
+                    )} />
+                    <span className="flex-1 text-sm font-bold tracking-tight">{item.label}</span>
+                    {item.badge && (
+                      <span className="px-2 py-0.5 rounded-full bg-gold text-primary-foreground text-[10px] font-black shadow-lg shadow-gold/20">
+                        {item.badge}
+                      </span>
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="pt-6 space-y-3 border-t border-border/40 pb-4">
+          <p className="px-4 text-[10px] font-black text-muted-foreground uppercase tracking-[0.25em] opacity-40">Intelligence</p>
           <div className="space-y-1">
-            <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 uppercase">Portfolio</p>
-            {mainNavItems.map((item) => {
+            {bottomNavItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPath === item.href || 
                 (item.href !== '/' && currentPath.startsWith(item.href));
@@ -236,7 +279,7 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
                   key={item.id}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative overflow-hidden",
+                    "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all group relative overflow-hidden",
                     isActive 
                       ? "bg-gold/10 text-foreground" 
                       : "text-muted-foreground hover:bg-gold/5 hover:text-gold"
@@ -252,49 +295,10 @@ export function DiscordNav({ currentPath = '/' }: { currentPath?: string }) {
                     isActive ? "text-gold" : "group-hover:text-gold-light"
                   )} />
                   <span className="flex-1 text-sm font-bold tracking-tight">{item.label}</span>
-                  {item.badge && (
-                    <span className="px-2 py-0.5 rounded-full bg-gold text-primary-foreground text-[10px] font-black shadow-lg shadow-gold/20">
-                      {item.badge}
-                    </span>
-                  )}
                 </a>
               );
             })}
           </div>
-        </div>
-
-        {/* Bottom Navigation */}
-        <div className="pt-6 space-y-1 border-t border-border/40 pb-4">
-          <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 opacity-50 uppercase">Intelligence</p>
-          {bottomNavItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = currentPath === item.href || 
-              (item.href !== '/' && currentPath.startsWith(item.href));
-            
-            return (
-              <a
-                key={item.id}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative overflow-hidden",
-                  isActive 
-                    ? "bg-gold/10 text-foreground" 
-                    : "text-muted-foreground hover:bg-gold/5 hover:text-gold"
-                )}
-              >
-                {isActive && (
-                  <div
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)]"
-                  />
-                )}
-                <Icon className={cn(
-                  "w-5 h-5 transition-colors",
-                  isActive ? "text-gold" : "group-hover:text-gold-light"
-                )} />
-                <span className="flex-1 text-sm font-bold tracking-tight">{item.label}</span>
-              </a>
-            );
-          })}
         </div>
       </nav>
 

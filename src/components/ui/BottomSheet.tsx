@@ -29,14 +29,14 @@ export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetPro
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[3rem] shadow-2xl z-[70] max-h-[90vh] overflow-y-auto scrollbar-hide"
+            className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/60 rounded-t-[3rem] shadow-2xl z-[70] max-h-[90vh] overflow-y-auto scrollbar-hide"
           >
-            <div className="sticky top-0 bg-white/80 backdrop-blur-md px-8 py-6 flex items-center justify-between border-b border-zinc-50 z-10">
-              <div className="w-12 h-1 bg-zinc-100 rounded-full absolute top-2 left-1/2 -translate-x-1/2" />
-              <h2 className="text-2xl font-serif text-charcoal tracking-tight">{title}</h2>
+            <div className="sticky top-0 bg-background/80 backdrop-blur-md px-8 py-6 flex items-center justify-between border-b border-border/40 z-10">
+              <div className="w-12 h-1 bg-border/40 rounded-full absolute top-2 left-1/2 -translate-x-1/2" />
+              <h2 className="text-2xl font-serif text-foreground tracking-tight">{title}</h2>
               <button 
                 onClick={onClose}
-                className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center text-zinc-400 hover:text-charcoal transition-colors"
+                className="w-10 h-10 rounded-full bg-muted/20 flex items-center justify-center text-muted-foreground hover:text-gold transition-colors"
               >
                 <X size={20} />
               </button>
