@@ -165,64 +165,94 @@ function ListingCard({ listing, index }: { listing: Listing; index: number }) {
 
   return (
     <motion.div
-      className="group cursor-pointer flex flex-col h-full bg-card rounded-[2rem] border border-border/60 overflow-hidden hover:border-gold/40 transition-all shadow-xl"
+      className="group cursor-pointer relative aspect-[3/4] rounded-[2.5rem] overflow-hidden border border-border/60 hover:border-gold/40 transition-all shadow-2xl"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
     >
-      {/* Image Container */}
-      <div className="relative aspect-[16/10] overflow-hidden">
+      {/* Background Image - Full Card */}
+      <div className="absolute inset-0">
         <motion.img
           key={currentImage}
           src={listing.images[currentImage]}
           alt={listing.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         />
-        
-        {/* Save Button */}
+        {/* Cinematic Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent opacity-60" />
+      </div>
+      
+      {/* Top Actions */}
+      <div className="absolute top-6 left-6 right-6 flex items-start justify-between z-10">
+        <div className="flex flex-col gap-2">
+          {listing.isNew && (
+            <span className="w-fit px-3 py-1 rounded-full bg-gold text-black text-[10px] font-black uppercase tracking-widest shadow-lg">
+              New Intel
+            </span>
+          )}
+          <span className="w-fit px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-black text-white uppercase tracking-widest">
+            {listing.location}
+          </span>
+        </div>
         <button
           onClick={(e) => { e.stopPropagation(); setIsSaved(!isSaved); }}
-          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:scale-110 transition-all z-10"
+          className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:scale-110 transition-all z-10"
         >
-          <Heart className={cn("w-5 h-5", isSaved && "fill-red-500 text-red-500")} />
+          <Heart className={cn("w-6 h-6 transition-colors", isSaved && "fill-red-500 text-red-500")} />
         </button>
-
-        {/* Info Overlay */}
-        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between z-10">
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-black text-white uppercase tracking-widest">
-              {listing.location}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2 py-1 rounded-lg border border-white/10">
-            <Star className="w-3 h-3 text-gold fill-gold" />
-            <span className="text-[10px] font-black text-white">{listing.rating}</span>
-          </div>
-        </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6 flex-1 flex flex-col space-y-4">
-        <div>
-          <h3 className="text-xl font-bold text-foreground tracking-tight group-hover:text-gold transition-colors truncate">
-            {listing.title}
-          </h3>
-          <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em] mt-1 opacity-60">
+      {/* Bottom Content Overlay */}
+      <div className="absolute bottom-0 left-0 right-0 p-8 space-y-6 z-10">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-gold transition-colors">
+              {listing.title}
+            </h3>
+            <div className="flex items-center gap-1.5 bg-gold/20 backdrop-blur-md px-2.5 py-1 rounded-xl border border-gold/30">
+              <Star className="w-3.5 h-3.5 text-gold fill-gold" />
+              <span className="text-xs font-black text-gold">{listing.rating}</span>
+            </div>
+          </div>
+          <p className="text-xs text-white/60 font-medium uppercase tracking-[0.1em]">
             {listing.details.bedrooms} Bed • {listing.details.bathrooms} Bath • {listing.details.guests} Guests
           </p>
         </div>
 
-        {/* Price Comparison Block */}
-        <div className="flex-1">
-          <PriceBadge prices={listing.prices} />
+        {/* Price Comparison Block - Compact Glass Style */}
+        <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+          <div className="flex items-center justify-between mb-3 pb-3 border-b border-white/5">
+            <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Direct vs Platforms</span>
+            <div className="flex items-center gap-1 text-emerald-400 text-[10px] font-black uppercase">
+              <TrendingDown size={12} />
+              Save {Math.round(((listing.prices.platforms[0].price - listing.prices.direct) / listing.prices.platforms[0].price) * 100)}%
+            </div>
+          </div>
+          <div className="flex items-end justify-between">
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-black text-white">${listing.prices.direct}</span>
+              <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">/ night</span>
+            </div>
+            <div className="text-right opacity-40 text-[10px] font-bold">
+              OTA Average: <span className="line-through">${Math.round(listing.prices.platforms.reduce((a, b) => a + b.price, 0) / listing.prices.platforms.length)}</span>
+            </div>
+          </div>
         </div>
 
-        <button className="w-full btn-gold h-12 rounded-2xl flex items-center justify-center gap-2 text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-gold/10">
-          Secure Direct Rate
-          <ExternalLink size={14} />
-        </button>
+        {/* Interactive Buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          <button className="h-12 rounded-2xl bg-gold text-black text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-gold/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
+            View Home
+            <ArrowRight size={14} />
+          </button>
+          <button className="h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-white/20 transition-all">
+            Visit Website
+            <Globe size={14} />
+          </button>
+        </div>
       </div>
     </motion.div>
   );
