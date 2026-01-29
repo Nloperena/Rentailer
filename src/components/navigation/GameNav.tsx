@@ -55,15 +55,6 @@ const navItems: NavItem[] = [
     xp: 100
   },
   { 
-    id: 'community', 
-    label: 'Guild', 
-    href: '/community', 
-    icon: Users,
-    description: 'Connect with hosts',
-    color: 'from-gold/20 to-gold/5',
-    xp: 30
-  },
-  { 
     id: 'analytics', 
     label: 'Insights', 
     href: '/analytics', 

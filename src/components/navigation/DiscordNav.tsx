@@ -23,7 +23,6 @@ const mainNavItems: NavItem[] = [
 ];
 
 const bottomNavItems: NavItem[] = [
-  { id: 'community', label: 'Guild', href: '/community', icon: Users },
   { id: 'analytics', label: 'Insights', href: '/analytics', icon: BarChart3 },
   { id: 'jaine', label: 'JAiNE', href: '/jaine', icon: Sparkles },
 ];
