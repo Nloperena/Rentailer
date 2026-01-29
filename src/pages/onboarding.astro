@@ -1,0 +1,44 @@
+---
+import '@/styles/global.css';
+import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Get Started | Rentalier™</title>
+  </head>
+  <body class="bg-background text-foreground min-h-screen">
+    <div class="min-h-screen bg-background">
+      <!-- Header -->
+      <header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+        <div class="flex items-center justify-center h-16">
+          <a href="/" class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-gold flex items-center justify-center">
+              <span class="text-black font-bold text-sm">R</span>
+            </div>
+            <div>
+              <span class="text-foreground font-semibold">Rentalier</span>
+              <sup class="text-[10px] text-muted-foreground">™</sup>
+            </div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main content -->
+      <main class="pt-16">
+        <OnboardingFlow client:load />
+      </main>
+
+      <!-- Subtle background decoration -->
+      <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 -left-32 w-64 h-64 bg-gold/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-gold/3 rounded-full blur-3xl"></div>
+      </div>
+    </div>
+  </body>
+</html>
+

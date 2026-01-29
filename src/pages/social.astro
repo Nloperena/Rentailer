@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Card, CardContent } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
+import { PageHeader } from '../components/layout/PageHeader';
+import { Share2, Instagram, Facebook, Linkedin, Youtube, Twitter, Plus, Copy, Check, ExternalLink, Flame, Star, Trophy } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const platforms = [
+  { id: 'instagram', name: 'Instagram', icon: Instagram, color: 'text-pink-500', bg: 'bg-pink-500/10', border: 'border-pink-500/20', connected: true, handle: '@nicholas_stays' },
+  { id: 'facebook', name: 'Facebook', icon: Facebook, color: 'text-blue-600', bg: 'bg-blue-600/10', border: 'border-blue-600/20', connected: false },
+  { id: 'linkedin', name: 'LinkedIn', icon: Linkedin, color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/20', connected: true, handle: 'Nicholas Miller' },
+  { id: 'youtube', name: 'YouTube', icon: Youtube, color: 'text-red-600', bg: 'bg-red-600/10', border: 'border-red-600/20', connected: false },
+  { id: 'x', name: 'X / Twitter', icon: Twitter, color: 'text-white', bg: 'bg-white/10', border: 'border-white/20', connected: true, handle: '@nicholas_stays' },
+];
+
+const tabs = ['Connect', 'Signals', 'Studio'];
+---
+
+<Layout title="Social Hub | Rentalier™">
+  <div className="max-w-5xl mx-auto px-8 py-12 space-y-12">
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <PageHeader 
+        title="Social Hub" 
+        description="Sync your reach and earn XP by sharing your authority across professional networks."
+        className="mb-0"
+      />
+      
+      <div className="flex bg-zinc-900/50 p-1 rounded-xl border border-zinc-800 backdrop-blur-sm mb-2 shrink-0">
+        {tabs.map(tab => (
+          <Button key={tab} variant={tab === 'Connect' ? 'glass' : 'ghost'} size="sm" className="px-6 text-[10px] font-bold uppercase tracking-widest">{tab}</Button>
+        ))}
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {platforms.map(platform => (
+        <Card key={platform.id} className={cn("bg-zinc-900/30 border-zinc-900 hover:border-zinc-800 transition-all duration-300 overflow-hidden relative group", platform.connected && "border-orange-500/10 bg-orange-500/[0.02]")}>
+          {platform.connected && <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"><Check size={40} /></div>}
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center border transition-all shadow-inner", platform.bg, platform.color, platform.border, "group-hover:scale-110")}>
+                <platform.icon size={24} />
+              </div>
+              {platform.connected ? (
+                <div className="flex items-center gap-1.5 text-emerald-500 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-emerald-500/5 border border-emerald-500/10 rounded-full">
+                  <Check size={12} strokeWidth={3} /> Connected
+                </div>
+              ) : (
+                <Button variant="outline" size="sm" className="h-8 text-[10px] px-4 font-bold uppercase tracking-widest rounded-full hover:bg-white hover:text-black">Connect</Button>
+              )}
+            </div>
+            
+            <div className="space-y-1">
+              <h3 className="font-medium text-white">{platform.name}</h3>
+              <p className="text-xs text-zinc-500 font-medium">{platform.connected ? platform.handle : 'Not linked yet'}</p>
+            </div>
+            
+            {platform.connected && (
+              <div className="mt-6 pt-4 border-t border-zinc-800 flex justify-between items-center group/link cursor-pointer">
+                <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest group-hover/link:text-zinc-300 transition-colors">Sync Active</span>
+                <ExternalLink size={12} className="text-zinc-600 group-hover/link:text-orange-500 transition-colors" />
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+
+    <Card className="border-glow-orange bg-zinc-950/50 overflow-hidden relative shadow-2xl">
+      <div className="absolute top-0 right-0 p-8 opacity-5">
+        <Share2 size={160} className="text-orange-500" />
+      </div>
+      <CardContent className="p-10">
+        <div className="max-w-2xl space-y-8">
+          <div className="space-y-3">
+            <h2 className="text-2xl font-serif text-white">Share Your Profile</h2>
+            <p className="text-zinc-400 leading-relaxed">Share your verified Rentalier status to build trust with potential guests and partners. Profiles shared on professional networks get 4x more visibility.</p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1 bg-zinc-900/80 border border-zinc-800 rounded-2xl px-5 py-3 text-sm text-zinc-300 flex items-center overflow-hidden whitespace-nowrap font-medium backdrop-blur-sm">
+              <span className="text-zinc-600 mr-1.5">rentalier.com/r/</span>nicholas
+            </div>
+            <Button variant="gold" className="gap-2 h-12 px-8 rounded-2xl shadow-xl">
+              <Copy size={18} />
+              Copy Profile Link
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap items-center gap-10 pt-4">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1.5 flex items-center gap-1.5"><Star size={10} className="text-orange-500" /> Reward</span>
+              <span className="text-orange-500 font-bold text-lg">+10 XP</span>
+            </div>
+            <div className="w-px h-10 bg-zinc-800 hidden sm:block"></div>
+            <div className="flex flex-col">
+              <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1.5 flex items-center gap-1.5"><Flame size={10} className="text-orange-500" /> Daily Cap</span>
+              <span className="text-zinc-300 font-bold text-lg">1 Share</span>
+            </div>
+            <div className="w-px h-10 bg-zinc-800 hidden sm:block"></div>
+            <div className="flex flex-col">
+              <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1.5 flex items-center gap-1.5"><Trophy size={10} className="text-orange-500" /> Bonus</span>
+              <span className="text-zinc-300 font-bold text-lg">Weekly Streak</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</Layout>

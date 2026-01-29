@@ -1,0 +1,8 @@
+---
+import GameShell from '@/layouts/GameShell.astro';
+import { ProfileHub } from '@/components/profile/ProfileHub';
+---
+
+<GameShell title="Profile | Rentalier™" currentPath="/profile">
+  <ProfileHub client:load />
+</GameShell>

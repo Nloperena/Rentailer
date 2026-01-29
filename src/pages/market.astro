@@ -1,0 +1,10 @@
+---
+import AppShell from '../layouts/AppShell.astro';
+import { PortfolioManager } from '../components/market/PortfolioManager';
+---
+
+<AppShell title="Market Hub | Rentalier™">
+	<div class="max-w-4xl mx-auto px-6 py-16 pb-32">
+		<PortfolioManager client:load />
+	</div>
+</AppShell>

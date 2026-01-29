@@ -1,0 +1,20 @@
+---
+import AppShell from '../layouts/AppShell.astro';
+import { LearningFeed } from '../components/growth/LearningFeed';
+import { getCollection } from 'astro:content';
+
+const courses = await getCollection('curriculum');
+const sortedCourses = (courses || []).sort((a, b) => a.data.order - b.data.order);
+---
+
+<AppShell title="Growth Hub | Rentalier™">
+	<div class="max-w-4xl mx-auto px-6 py-16 pb-32">
+		<LearningFeed 
+      courses={sortedCourses.map(c => ({
+        ...c.data,
+        complete: c.data.order === 1 // Mock completion for the first course
+      }))} 
+      client:load 
+    />
+	</div>
+</AppShell>

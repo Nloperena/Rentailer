@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import { Sidebar } from '../components/layout/Sidebar';
+import { AppDock } from '../components/navigation/AppDock';
+import { JaineFab } from '../components/navigation/JaineFab';
+import { CommandCenter } from '../components/navigation/CommandCenter';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="min-h-screen bg-background text-foreground overflow-x-hidden">
+		<!-- Desktop Sidebar -->
+		<Sidebar client:load />
+		
+		<!-- Main Content Area -->
+		<main class="lg:ml-64 min-h-screen pb-32 lg:pb-8">
+			<slot />
+		</main>
+		
+		<!-- Mobile Navigation -->
+		<div class="lg:hidden">
+			<AppDock client:load />
+		</div>
+		
+		<!-- JAiNE FAB (both mobile and desktop) -->
+		<JaineFab client:load />
+		
+		<!-- Command Center (Cmd+K) -->
+		<CommandCenter client:load />
+	</body>
+</html>
+
+<script is:inline>
+	// Initialize theme from localStorage
+	const theme = localStorage.getItem('theme') || 'dark';
+	document.documentElement.classList.toggle('light', theme === 'light');
+	document.documentElement.classList.toggle('dark', theme === 'dark');
+</script>
+
+<style is:global>
+	:root {
+		--app-height: 100%;
+	}
+	
+	html, body {
+		height: var(--app-height);
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	html {
+		scroll-behavior: smooth;
+		scrollbar-gutter: stable;
+	}
+
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+</style>

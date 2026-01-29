@@ -1,0 +1,82 @@
+---
+import AppShell from '../layouts/AppShell.astro';
+import { Card, CardContent } from '../components/ui/Card';
+import { Wifi, Key, Info, MapPin, Coffee, Phone, Shield } from 'lucide-react';
+
+const { id } = Astro.params;
+
+// Mock data for the guide
+const guide = {
+  propertyName: "Sunset Beach House",
+  location: "Destin, Florida",
+  hostName: "Nicholas",
+  wifi: { ssid: "BeachHouse_Guest", pass: "sunnydays2026" },
+  sections: [
+    { title: "Check-in", icon: Key, content: "Door code: 1234#. Valid from 4:00 PM on arrival day." },
+    { title: "House Rules", icon: Shield, content: "No smoking inside. Quiet hours 10pm-8am. Enjoy the beach!" },
+    { title: "Local Coffee", icon: Coffee, content: "Sunrise Brew is just 2 blocks away. Try their iced latte!" },
+  ]
+};
+---
+
+<AppShell title={`Guest Guide | ${guide.propertyName}`}>
+  <div className="max-w-xl mx-auto px-6 py-12 space-y-10">
+    <div className="text-center space-y-2">
+      <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Welcome to</p>
+      <h1 className="text-3xl font-serif text-charcoal">{guide.propertyName}</h1>
+      <div className="flex items-center justify-center gap-2 text-zinc-400 text-sm">
+        <MapPin size={14} /> {guide.location}
+      </div>
+    </div>
+
+    {/* Hero Action Card (WiFi) */}
+    <div className="linen-card bg-charcoal text-white border-0 shadow-jewel overflow-hidden relative">
+      <div className="absolute top-0 right-0 p-6 opacity-10"><Wifi size={80} /></div>
+      <div className="space-y-4 relative z-10">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-jewel-orange">
+          <Wifi size={12} /> Stay Connected
+        </div>
+        <div className="space-y-1">
+          <p className="text-zinc-400 text-xs uppercase font-bold tracking-widest">Network</p>
+          <p className="text-xl font-medium">{guide.wifi.ssid}</p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-zinc-400 text-xs uppercase font-bold tracking-widest">Password</p>
+          <p className="text-xl font-medium tracking-tight font-mono">{guide.wifi.pass}</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Sections Feed */}
+    <div className="space-y-4">
+      {guide.sections.map(section => (
+        <div className="linen-card flex gap-6 p-6">
+          <div className="w-12 h-12 rounded-2xl bg-zinc-50 flex items-center justify-center border border-zinc-100 shrink-0 text-charcoal">
+            <section.icon size={24} />
+          </div>
+          <div className="space-y-1">
+            <h3 className="font-serif text-lg text-charcoal">{section.title}</h3>
+            <p className="text-sm text-zinc-500 leading-relaxed">{section.content}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Host Contact */}
+    <div className="p-8 rounded-[2rem] bg-zinc-50 border border-zinc-100 flex flex-col items-center text-center space-y-4">
+      <div className="w-16 h-16 rounded-full bg-white border border-zinc-100 flex items-center justify-center shadow-sm">
+        <img src="https://i.pravatar.cc/150?u=nicholas" className="w-14 h-14 rounded-full" alt="Host" />
+      </div>
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-charcoal">Need help? Ask {guide.hostName}</p>
+        <p className="text-xs text-zinc-400 max-w-xs">Available via text or call for any immediate needs during your stay.</p>
+      </div>
+      <button className="flex items-center gap-2 px-6 py-2.5 bg-white border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest hover:border-jewel-orange transition-all">
+        <Phone size={14} className="text-jewel-orange" /> Contact Host
+      </button>
+    </div>
+  </div>
+</AppShell>
+
+
+

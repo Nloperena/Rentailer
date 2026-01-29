@@ -1,0 +1,15 @@
+{
+  "id": "photo",
+  "category": "identity",
+  "label": "Add profile photo",
+  "benefit": "Profiles with photos get 31% more clicks",
+  "completed": false,
+  "locked": false,
+  "href": "/profile",
+  "xp": 25,
+  "priority": 1,
+  "weight": 10
+}
+
+
+

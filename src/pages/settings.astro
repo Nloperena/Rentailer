@@ -1,0 +1,139 @@
+---
+import GameShell from '@/layouts/GameShell.astro';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { mockUser } from '@/lib/mock-service';
+---
+
+<GameShell title="Settings | Rentalier™" currentPath="/settings">
+  <div class="space-y-6 pb-24 md:pb-6">
+    {/* Page Header */}
+    <div>
+      <h1 class="text-2xl font-serif text-foreground">Settings</h1>
+      <p class="text-muted-foreground mt-1">Manage your account and preferences</p>
+    </div>
+
+    <div class="grid gap-6">
+      {/* Appearance */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Appearance</CardTitle>
+          <CardDescription>Customize how Rentalier looks on your device</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-foreground">Theme</p>
+              <p class="text-sm text-muted-foreground">Switch between light and dark mode</p>
+            </div>
+            <ThemeToggle client:load />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Notifications */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Notifications</CardTitle>
+          <CardDescription>Configure how you receive updates</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div class="flex items-center justify-between py-2">
+            <div>
+              <p class="font-medium text-foreground">Email Notifications</p>
+              <p class="text-sm text-muted-foreground">Receive updates about your properties</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked class="sr-only peer" />
+              <div class="w-11 h-6 bg-muted peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
+            </label>
+          </div>
+          <div class="flex items-center justify-between py-2">
+            <div>
+              <p class="font-medium text-foreground">Push Notifications</p>
+              <p class="text-sm text-muted-foreground">Browser notifications for urgent updates</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" />
+              <div class="w-11 h-6 bg-muted peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
+            </label>
+          </div>
+          <div class="flex items-center justify-between py-2">
+            <div>
+              <p class="font-medium text-foreground">Weekly Digest</p>
+              <p class="text-sm text-muted-foreground">Summary of your performance each week</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked class="sr-only peer" />
+              <div class="w-11 h-6 bg-muted peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
+            </label>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Account */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Account</CardTitle>
+          <CardDescription>Manage your account settings</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div class="space-y-2">
+            <Label>Email Address</Label>
+            <Input type="email" value={mockUser.email} disabled className="bg-muted" />
+            <p class="text-xs text-muted-foreground">Contact support to change your email</p>
+          </div>
+          <div class="pt-4 border-t border-border">
+            <Button variant="outline" className="text-muted-foreground">
+              Change Password
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Subscription */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Subscription</CardTitle>
+          <CardDescription>Manage your Rentalier membership</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div class="flex items-center justify-between p-4 bg-gold/10 border border-gold/20 rounded-lg">
+            <div>
+              <p class="font-medium text-foreground">Candidate Plan</p>
+              <p class="text-sm text-muted-foreground">Access to learning & community</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-gold text-black">
+              Active
+            </span>
+          </div>
+          <Button className="w-full bg-gold text-black hover:bg-gold/90">
+            Upgrade to Professional
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Danger Zone */}
+      <Card className="border-destructive/20">
+        <CardHeader>
+          <CardTitle className="text-destructive">Danger Zone</CardTitle>
+          <CardDescription>Irreversible account actions</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-foreground">Delete Account</p>
+              <p class="text-sm text-muted-foreground">Permanently delete your account and data</p>
+            </div>
+            <Button variant="destructive">Delete Account</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</GameShell>
+
+

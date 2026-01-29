@@ -1,0 +1,16 @@
+{
+  "title": "The Stray Cat Method",
+  "description": "Master the art of high-impact, low-cost property differentiation.",
+  "level": "Foundational",
+  "duration": "2.5 hrs",
+  "xp": 500,
+  "order": 1,
+  "implementationTrigger": {
+    "label": "Apply to Your Properties",
+    "href": "/market",
+    "context": "differentiation"
+  }
+}
+
+
+

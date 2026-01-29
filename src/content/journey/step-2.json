@@ -1,0 +1,15 @@
+{
+  "id": "oath",
+  "category": "identity",
+  "label": "Sign the Hospitality Oath",
+  "benefit": "Show your commitment to the professional standard",
+  "completed": true,
+  "locked": false,
+  "href": "/oath",
+  "xp": 100,
+  "priority": 2,
+  "weight": 15
+}
+
+
+

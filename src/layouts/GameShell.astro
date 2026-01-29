@@ -1,0 +1,59 @@
+---
+import '@/styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+import { DiscordNav } from '@/components/navigation/DiscordNav';
+import { GameDock } from '@/components/navigation/GameDock';
+
+interface Props {
+  title: string;
+  currentPath?: string;
+}
+
+const { title, currentPath = Astro.url.pathname } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>{title}</title>
+    
+    <!-- Preload fonts for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Enable smooth page transitions -->
+    <ViewTransitions />
+  </head>
+  <body class="bg-background text-foreground min-h-screen antialiased">
+    <!-- Persistent Sidebar Navigation (no transition) -->
+    <div transition:persist="sidebar">
+      <DiscordNav client:load currentPath={currentPath} />
+    </div>
+    
+    <!-- Main content area (transitions on navigation) -->
+    <main class="md:pl-[260px] min-h-screen bg-background" transition:animate="fade">
+      <div class="px-4 py-6 md:px-8 md:py-8 pb-28 md:pb-8">
+        <slot />
+      </div>
+    </main>
+
+    <!-- Persistent Mobile dock (no transition) -->
+    <div transition:persist="dock">
+      <GameDock client:load currentPath={currentPath} />
+    </div>
+
+    <!-- Initialize theme from localStorage -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.toggle('light', theme === 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    </script>
+  </body>
+</html>
+

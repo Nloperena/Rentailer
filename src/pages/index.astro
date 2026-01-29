@@ -1,0 +1,8 @@
+---
+import GameShell from '@/layouts/GameShell.astro';
+import { GameDashboard } from '@/components/dashboard/GameDashboard';
+---
+
+<GameShell title="Mission Control | Rentalier™" currentPath="/">
+  <GameDashboard client:load />
+</GameShell>

@@ -1,0 +1,78 @@
+---
+import AppShell from '../layouts/AppShell.astro';
+import { Card, CardContent } from '../components/ui/Card';
+import { MapPin, Star, ArrowRight, Globe, Share2 } from 'lucide-react';
+
+// Mock data for the portfolio
+const profile = {
+  name: "Nicholas Miller",
+  bio: "Luxury property operator focused on premium guest experiences in the Miami market. Certified Rentalier™.",
+  market: "Miami, Florida",
+  avatar: "https://i.pravatar.cc/150?u=nicholas",
+  properties: [
+    { name: "Sunset Beach House", location: "Destin, FL", image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80" },
+    { name: "Lakeside Retreat", location: "Lake Tahoe, CA", image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80" }
+  ]
+};
+---
+
+<AppShell title={`${profile.name} | Verified Rentalier™`}>
+  <div className="max-w-4xl mx-auto px-6 py-16 space-y-16">
+    {/* Profile Header */}
+    <div className="flex flex-col items-center text-center space-y-6">
+      <div className="relative">
+        <img src={profile.avatar} className="w-24 h-24 rounded-full border-4 border-white shadow-soft" alt={profile.name} />
+        <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gold rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+          <Star size={16} className="text-white fill-white" />
+        </div>
+      </div>
+      
+      <div className="space-y-3">
+        <h1 className="text-4xl font-serif text-charcoal">{profile.name}</h1>
+        <p className="text-zinc-500 max-w-lg leading-relaxed mx-auto">{profile.bio}</p>
+        <div className="flex items-center justify-center gap-4 pt-2">
+          <span className="text-[10px] bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-emerald-100">Relationship Verified</span>
+          <span className="text-[10px] bg-zinc-50 text-zinc-500 px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-zinc-100">{profile.market}</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Properties Grid */}
+    <div className="space-y-8">
+      <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
+        <h2 className="text-xl font-serif text-charcoal">Verified Portfolio</h2>
+        <span className="text-xs text-zinc-400 font-medium">{profile.properties.length} Active Listings</span>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        {profile.properties.map(prop => (
+          <div className="group cursor-pointer">
+            <div className="aspect-[16/10] rounded-3xl overflow-hidden mb-4 shadow-soft">
+              <img src={prop.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={prop.name} />
+            </div>
+            <div className="space-y-1">
+              <h3 className="font-serif text-lg text-charcoal group-hover:text-jewel-orange transition-colors">{prop.name}</h3>
+              <p className="text-zinc-400 text-sm flex items-center gap-1.5"><MapPin size={12} /> {prop.location}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Footer CTA */}
+    <div className="pt-16 border-t border-zinc-100 flex flex-col items-center gap-6">
+      <p className="text-zinc-400 text-sm font-medium">Verified by Rentalier™ Authority System</p>
+      <div className="flex gap-4">
+        <button className="flex items-center gap-2 px-6 py-2.5 bg-charcoal text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all">
+          <Globe size={14} className="text-jewel-orange" /> Direct Booking
+        </button>
+        <button className="flex items-center gap-2 px-6 py-2.5 bg-white border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest hover:border-zinc-300 transition-all">
+          <Share2 size={14} /> Share Profile
+        </button>
+      </div>
+    </div>
+  </div>
+</AppShell>
+
+
+

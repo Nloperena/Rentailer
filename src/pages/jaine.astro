@@ -1,0 +1,109 @@
+---
+import GameShell from '@/layouts/GameShell.astro';
+import { getHydratedState } from '../lib/mock-service';
+
+const { user } = getHydratedState();
+
+const suggestedPrompts = [
+  "Write a welcome message for my Miami beach property",
+  "Suggest improvements for my property listing",
+  "Create a check-in guide for first-time guests",
+  "Analyze my pricing strategy for peak season",
+  "Draft a response to a 4-star review",
+  "Generate social media captions for my property"
+];
+
+const recentConversations = [
+  { id: '1', title: 'Property description for Sunset Beach', date: '2 days ago' },
+  { id: '2', title: 'Guest welcome message templates', date: '5 days ago' },
+  { id: '3', title: 'Pricing strategy analysis', date: '1 week ago' },
+];
+---
+
+<GameShell title="JAiNE | Rentalier™" currentPath="/jaine">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+		<!-- Header -->
+		<div class="text-center mb-10">
+			<div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mx-auto mb-4">
+				<svg class="w-10 h-10 text-gold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M12 3L3 9l9 6 9-6-9-6z"/>
+					<path d="M3 14l9 6 9-6"/>
+					<path d="M3 9v5l9 6 9-6V9"/>
+				</svg>
+			</div>
+			<h1 class="heading-section text-foreground mb-2">
+				JAiNE<span class="tm">™</span>
+			</h1>
+			<p class="text-muted-foreground max-w-md mx-auto">
+				Your AI strategist, trained on hospitality excellence. Ask anything about your properties, guests, or business.
+			</p>
+		</div>
+
+		<!-- Chat Interface -->
+		<div class="surface-panel border border-border/60 rounded-2xl bg-card overflow-hidden mb-8">
+			<!-- Chat Messages Area -->
+			<div class="h-96 p-6 overflow-y-auto">
+				<div class="flex items-start gap-4 mb-6">
+					<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+						<svg class="w-4 h-4 text-gold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M12 3L3 9l9 6 9-6-9-6z"/>
+							<path d="M3 14l9 6 9-6"/>
+						</svg>
+					</div>
+					<div class="flex-1">
+						<p class="text-sm text-foreground leading-relaxed">
+							Hello {user.full_name.split(' ')[0]}! I'm JAiNE, your AI strategist. I've been trained on your brand, 
+							listings, and the Rentalier standards. How can I help you today?
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Input Area -->
+			<div class="border-t border-border/60 p-4">
+				<div class="flex gap-3">
+					<input 
+						type="text"
+						placeholder="Ask JAiNE anything..."
+						class="flex-1 h-12 px-4 rounded-xl border border-border bg-muted/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
+					/>
+					<button class="btn-gold h-12 px-6 rounded-xl text-primary-foreground flex items-center gap-2">
+						<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="22" y1="2" x2="11" y2="13"/>
+							<polygon points="22 2 15 22 11 13 2 9 22 2"/>
+						</svg>
+						Send
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Suggested Prompts -->
+		<div class="mb-8">
+			<h2 class="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">Try asking</h2>
+			<div class="grid sm:grid-cols-2 gap-3">
+				{suggestedPrompts.map((prompt) => (
+					<button class="text-left p-4 rounded-xl border border-border/60 bg-card hover:border-primary/30 hover:bg-primary/5 transition-all">
+						<p class="text-sm text-foreground">{prompt}</p>
+					</button>
+				))}
+			</div>
+		</div>
+
+		<!-- Recent Conversations -->
+		<div>
+			<h2 class="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">Recent Conversations</h2>
+			<div class="space-y-2">
+				{recentConversations.map((convo) => (
+					<a 
+						href={`/jaine/conversation/${convo.id}`}
+						class="flex items-center justify-between p-4 rounded-xl border border-border/60 bg-card hover:border-primary/30 transition-all"
+					>
+						<span class="text-sm text-foreground">{convo.title}</span>
+						<span class="text-xs text-muted-foreground">{convo.date}</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</div>
+</GameShell>

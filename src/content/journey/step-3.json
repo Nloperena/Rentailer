@@ -1,0 +1,15 @@
+{
+  "id": "first-property",
+  "category": "properties",
+  "label": "Add first property",
+  "benefit": "Required for directory exposure and AI analysis",
+  "completed": false,
+  "locked": false,
+  "href": "/properties",
+  "xp": 50,
+  "priority": 3,
+  "weight": 15
+}
+
+
+
