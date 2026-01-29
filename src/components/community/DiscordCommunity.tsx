@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Hash, ChevronDown, ChevronRight, Plus, Settings,
   Users, Crown, Shield, Circle, Send, Smile, Image, Gift,
   AtSign, Pin, Bell, BellOff, Search, MoreHorizontal,
-  Inbox, ArrowRight, Flame, Zap
+  Inbox, ArrowRight, Flame, Zap, X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -37,7 +37,7 @@ interface Message {
   author: Member;
   content: string;
   timestamp: string;
-  reactions?: { emoji: string; count: number }[];
+  reactions?: { emoji: string; count: number; active?: boolean }[];
 }
 
 // Mock data
@@ -66,31 +66,51 @@ const members: Member[] = [
   { id: '2', name: 'James Mitchell', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100', status: 'online', role: 'moderator' },
   { id: '3', name: 'Emily Rodriguez', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100', status: 'idle', role: 'pro', activity: 'Analyzing Miami Yields' },
   { id: '4', name: 'Michael Park', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100', status: 'online', role: 'pro' },
-  { id: '7', name: 'Nicholas Miller', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100', status: 'online', role: 'member' },
+  { id: 'currentUser', name: 'Nicholas Miller', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100', status: 'online', role: 'member' },
 ];
 
-const mockMessages: Message[] = [
-  {
-    id: '1',
-    author: members[0],
-    content: "Intelligence Update: We've just deployed the new Hospitality ROI module. All Council members should review the pricing benchmarks.",
-    timestamp: '10:32 AM',
-    reactions: [{ emoji: '🔥', count: 5 }, { emoji: '📈', count: 3 }],
-  },
-  {
-    id: '2',
-    author: members[3],
-    content: "Outstanding. I've been tracking these benchmarks in my Miami portfolio and the shift is significant.",
-    timestamp: '10:45 AM',
-  },
-  {
-    id: '3',
-    author: members[2],
-    content: "Has anyone transitioned their dynamic pricing logic to the JAiNE v2 engine yet? Looking for deployment feedback.",
-    timestamp: '11:02 AM',
-    reactions: [{ emoji: '🤔', count: 2 }],
-  },
-];
+const initialMessages: Record<string, Message[]> = {
+  'announcements': [
+    {
+      id: 'a1',
+      author: members[0],
+      content: "Council Update: The 2026 Strategic Roadmap is now available in the Intelligence Hub. All members are encouraged to review the Q1 milestones.",
+      timestamp: '9:00 AM',
+      reactions: [{ emoji: '📜', count: 12 }, { emoji: '🚀', count: 8 }],
+    }
+  ],
+  'general': [
+    {
+      id: '1',
+      author: members[0],
+      content: "Intelligence Update: We've just deployed the new Hospitality ROI module. All Council members should review the pricing benchmarks.",
+      timestamp: '10:32 AM',
+      reactions: [{ emoji: '🔥', count: 5 }, { emoji: '📈', count: 3 }],
+    },
+    {
+      id: '2',
+      author: members[3],
+      content: "Outstanding. I've been tracking these benchmarks in my Miami portfolio and the shift is significant.",
+      timestamp: '10:45 AM',
+    },
+    {
+      id: '3',
+      author: members[2],
+      content: "Has anyone transitioned their dynamic pricing logic to the JAiNE v2 engine yet? Looking for deployment feedback.",
+      timestamp: '11:02 AM',
+      reactions: [{ emoji: '🤔', count: 2 }],
+    },
+  ],
+  'str-talk': [
+    {
+      id: 's1',
+      author: members[1],
+      content: "Market Signal: We're seeing a 15% increase in direct booking inquiries for coastal markets. How are your acquisition channels performing?",
+      timestamp: 'Yesterday',
+      reactions: [{ emoji: '🌊', count: 4 }],
+    }
+  ]
+};
 
 const statusColors = {
   online: 'bg-emerald-500',
@@ -189,8 +209,47 @@ function StreamSidebar({
 }
 
 // Main Content Area
-function StreamFeed({ streamName }: { streamName: string }) {
-  const [message, setMessage] = useState('');
+function StreamFeed({ 
+  streamId,
+  streamName, 
+  messages,
+  onSendMessage,
+  onReact,
+  isTyping
+}: { 
+  streamId: string;
+  streamName: string;
+  messages: Message[];
+  onSendMessage: (content: string) => void;
+  onReact: (messageId: string, emoji: string) => void;
+  isTyping: boolean;
+}) {
+  const [inputText, setInputText] = useState('');
+  const [searchQuery, setSearchName] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const filteredMessages = useMemo(() => {
+    if (!searchQuery) return messages;
+    return messages.filter(m => 
+      m.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      m.author.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [messages, searchQuery]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [filteredMessages]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputText.trim()) return;
+    onSendMessage(inputText);
+    setInputText('');
+  };
 
   return (
     <div className="flex-1 flex flex-col bg-background h-full relative">
@@ -214,8 +273,15 @@ function StreamFeed({ streamName }: { streamName: string }) {
             <input
               type="text"
               placeholder="Search Intelligence..."
+              value={searchQuery}
+              onChange={(e) => setSearchName(e.target.value)}
               className="bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 outline-none w-48 font-medium"
             />
+            {searchQuery && (
+              <button onClick={() => setSearchName('')} className="text-muted-foreground hover:text-gold transition-colors">
+                <X size={14} />
+              </button>
+            )}
           </div>
           <button className="p-3 rounded-xl text-muted-foreground hover:text-gold hover:bg-gold/5 transition-all">
             <Bell className="w-5 h-5" />
@@ -225,8 +291,14 @@ function StreamFeed({ streamName }: { streamName: string }) {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar">
-        {mockMessages.map((msg) => (
-          <div key={msg.id} className="flex gap-6 group relative">
+        {filteredMessages.length > 0 ? filteredMessages.map((msg) => (
+          <motion.div 
+            key={msg.id} 
+            layout
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex gap-6 group relative"
+          >
             <div className="relative flex-shrink-0">
               <img
                 src={msg.author.avatar}
@@ -253,41 +325,88 @@ function StreamFeed({ streamName }: { streamName: string }) {
                   {msg.reactions.map((reaction, i) => (
                     <button
                       key={i}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-background border border-border/60 hover:border-gold/40 hover:bg-gold/5 transition-all group/emoji"
+                      onClick={() => onReact(msg.id, reaction.emoji)}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all group/emoji",
+                        reaction.active 
+                          ? "bg-gold/20 border-gold/40" 
+                          : "bg-background border-border/60 hover:border-gold/40 hover:bg-gold/5"
+                      )}
                     >
                       <span className="text-base">{reaction.emoji}</span>
-                      <span className="text-xs font-black text-muted-foreground group-hover/emoji:text-gold">{reaction.count}</span>
+                      <span className={cn(
+                        "text-xs font-black transition-colors",
+                        reaction.active ? "text-gold" : "text-muted-foreground group-hover/emoji:text-gold"
+                      )}>{reaction.count}</span>
                     </button>
                   ))}
                 </div>
               )}
             </div>
+          </motion.div>
+        )) : (
+          <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-40">
+            <Inbox size={48} className="text-muted-foreground" />
+            <div>
+              <p className="text-lg font-bold text-foreground tracking-tight">No Intelligence Found</p>
+              <p className="text-sm font-medium uppercase tracking-widest">Adjust your search or initiate a new stream</p>
+            </div>
           </div>
-        ))}
+        )}
+        <div ref={messagesEndRef} />
+        
+        {isTyping && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex gap-6 group relative"
+          >
+            <div className="relative flex-shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center border border-gold/20 shadow-xl">
+                <Sparkles className="w-6 h-6 text-gold animate-pulse" />
+              </div>
+            </div>
+            <div className="flex-1 min-w-0 space-y-2">
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-sm tracking-tight text-gold">JAiNE AI</span>
+                <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">Analyzing...</span>
+              </div>
+              <div className="flex gap-1.5 p-4 bg-card/30 border border-border/40 rounded-2xl w-fit">
+                <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0 }} className="w-1.5 h-1.5 rounded-full bg-gold" />
+                <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-gold" />
+                <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }} className="w-1.5 h-1.5 rounded-full bg-gold" />
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {/* Message Input */}
       <div className="p-10 pt-2">
-        <div className="bg-card rounded-[2rem] border border-border/60 p-3 focus-within:border-gold/50 transition-all shadow-2xl relative overflow-hidden group">
+        <form onSubmit={handleSubmit} className="bg-card rounded-[2rem] border border-border/60 p-3 focus-within:border-gold/50 transition-all shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none group-focus-within:bg-gold/10 transition-colors" />
           
           <div className="flex items-center gap-3 relative z-10">
-            <button className="p-3 rounded-2xl text-muted-foreground hover:text-gold hover:bg-gold/10 transition-all">
+            <button type="button" className="p-3 rounded-2xl text-muted-foreground hover:text-gold hover:bg-gold/10 transition-all">
               <Plus className="w-6 h-6" />
             </button>
             <input
               type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
               placeholder={`Contribute to the ${streamName} intelligence...`}
               className="flex-1 bg-transparent text-foreground font-medium placeholder:text-muted-foreground/40 outline-none text-base px-2"
             />
-            <button className="btn-gold h-12 px-8 rounded-2xl text-primary-foreground flex items-center gap-3 transition-all shadow-xl shadow-gold/10">
+            <button 
+              type="submit"
+              disabled={!inputText.trim()}
+              className="disabled:opacity-50 disabled:grayscale btn-gold h-12 px-8 rounded-2xl text-primary-foreground flex items-center gap-3 transition-all shadow-xl shadow-gold/10"
+            >
               <Send className="w-4 h-4" />
               <span className="text-xs font-black uppercase tracking-[0.2em]">Initiate</span>
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
@@ -296,14 +415,89 @@ function StreamFeed({ streamName }: { streamName: string }) {
 // Main Guild Hub Component
 export function DiscordCommunity() {
   const [activeStream, setActiveStream] = useState('general');
+  const [messagesByStream, setMessagesByStream] = useState<Record<string, Message[]>>(initialMessages);
+  const [isTyping, setIsTyping] = useState(false);
   
-  const currentStream = operationalStreams
-    .flatMap(c => categoryToStream(c))
-    .find(s => s.id === activeStream);
+  const currentStream = useMemo(() => {
+    return operationalStreams
+      .flatMap(c => c.channels)
+      .find(s => s.id === activeStream);
+  }, [activeStream]);
 
-  function categoryToStream(cat: ChannelCategory) {
-    return cat.channels;
-  }
+  const handleSendMessage = (content: string) => {
+    const newMessage: Message = {
+      id: Math.random().toString(36).substr(2, 9),
+      author: members[4], // Nicholas Miller
+      content,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessagesByStream(prev => ({
+      ...prev,
+      [activeStream]: [...(prev[activeStream] || []), newMessage]
+    }));
+
+    // Simulated JAiNE response logic
+    if (content.toLowerCase().includes('jaine') || activeStream === 'str-talk') {
+      setIsTyping(true);
+      setTimeout(() => {
+        const jaineResponse: Message = {
+          id: Math.random().toString(36).substr(2, 9),
+          author: { 
+            id: 'jaine', 
+            name: 'JAiNE AI', 
+            avatar: '/favicon.svg', 
+            status: 'online', 
+            role: 'admin',
+            activity: 'Analyzing Strategist Input'
+          },
+          content: "Intelligence Acknowledged. I'm analyzing your market signal and cross-referencing with hospitality standards. Expect a detailed briefing in the Strategy Hub shortly.",
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+        
+        setMessagesByStream(prev => ({
+          ...prev,
+          [activeStream]: [...(prev[activeStream] || []), jaineResponse]
+        }));
+        setIsTyping(false);
+      }, 3000);
+    }
+  };
+
+  const handleReact = (messageId: string, emoji: string) => {
+    setMessagesByStream(prev => {
+      const streamMessages = [...(prev[activeStream] || [])];
+      const messageIndex = streamMessages.findIndex(m => m.id === messageId);
+      
+      if (messageIndex === -1) return prev;
+
+      const message = { ...streamMessages[messageIndex] };
+      const reactions = [...(message.reactions || [])];
+      const reactionIndex = reactions.findIndex(r => r.emoji === emoji);
+
+      if (reactionIndex !== -1) {
+        const reaction = { ...reactions[reactionIndex] };
+        if (reaction.active) {
+          reaction.count -= 1;
+          reaction.active = false;
+        } else {
+          reaction.count += 1;
+          reaction.active = true;
+        }
+        reactions[reactionIndex] = reaction;
+      } else {
+        reactions.push({ emoji, count: 1, active: true });
+      }
+
+      message.reactions = reactions;
+      streamMessages[messageIndex] = message;
+
+      return {
+        ...prev,
+        [activeStream]: streamMessages
+      };
+    });
+  };
 
   return (
     <div className="flex h-[calc(100vh-8rem)] bg-background rounded-[2.5rem] border border-border/60 overflow-hidden shadow-2xl relative">
@@ -317,7 +511,14 @@ export function DiscordCommunity() {
         onSelectStream={setActiveStream} 
       />
       
-      <StreamFeed streamName={currentStream?.name || 'General'} />
+      <StreamFeed 
+        streamId={activeStream}
+        streamName={currentStream?.name || 'General'} 
+        messages={messagesByStream[activeStream] || []}
+        onSendMessage={handleSendMessage}
+        onReact={handleReact}
+        isTyping={isTyping}
+      />
     </div>
   );
 }
