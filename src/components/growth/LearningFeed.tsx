@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Play, CheckCircle2, Clock, Star, ArrowRight } from 'lucide-react';
+import { BookOpen, Play, CheckCircle2, Clock, Star, ArrowRight, Zap } from 'lucide-react';
 import { SpringButton } from '../motion/SpringButton';
 import { FadeIn, StaggerContainer } from '../motion/MotionWrapper';
 import { routes } from '@/lib/routes';
