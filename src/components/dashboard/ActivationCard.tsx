@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Progress } from '@/components/ui/Progress';
+import { Badge } from '@/components/ui/Badge';
 import { CheckCircle2, Lock, ArrowRight, Sparkles, Zap, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

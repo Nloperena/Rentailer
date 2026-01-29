@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import { ArrowRight, Camera, Sparkles, Shield, CheckCircle2 } from 'lucide-react';
 
 interface WelcomeHeroProps {
